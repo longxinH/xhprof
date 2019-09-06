@@ -1,5 +1,5 @@
 {
-    "name": "longxinh/xhprof",
+    "name": "driceman/xhprof",
     "type": "library",
     "description": "XHProf: A Hierarchical Profiler for PHP7",
     "keywords": ["profiling", "performance", "xhprof", "php-extension", "php71", "php72", "php73"],
