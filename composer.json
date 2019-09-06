@@ -1,0 +1,18 @@
+{
+    "name": "longxinh/xhprof",
+    "type": "library",
+    "description": "XHProf: A Hierarchical Profiler for PHP7",
+    "keywords": ["profiling", "performance", "xhprof", "php-extension", "php71", "php72", "php73"],
+    "homepage": "https://github.com/longxinH/xhprof",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "autoload": {
+        "files": [
+            "xhprof_lib/utils/xhprof_lib.php",
+            "xhprof_lib/utils/xhprof_runs.php"
+        ]
+    },
+    "bin": ["bin/xhprofile"]
+}
