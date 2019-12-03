@@ -299,6 +299,8 @@ PHP_RINIT_FUNCTION(xhprof)
     ZEND_TSRMLS_CACHE_UPDATE();
 #endif
 
+    XHPROF_G(timebase_conversion) = get_timebase_conversion();
+
     return SUCCESS;
 }
 
@@ -399,6 +401,18 @@ void hp_ignored_functions_clear(hp_ignored_functions *functions)
 
     memset(functions->filter, 0, XHPROF_IGNORED_FUNCTION_FILTER_SIZE);
     efree(functions);
+}
+
+double get_timebase_conversion()
+{
+#if defined(__APPLE__)
+    mach_timebase_info_data_t info;
+    (void) mach_timebase_info(&info);
+
+    return (info.numer / info.denom) * 1000 * 1000;
+#endif
+
+    return 1.0;
 }
 
 hp_ignored_functions *hp_ignored_functions_init(char **names)
@@ -838,7 +852,7 @@ void hp_sample_check(hp_entry_t **entries)
 static inline uint64 cycle_timer()
 {
 #if defined(__APPLE__) && defined(__MACH__)
-    return mach_absolute_time();
+    return mach_absolute_time() / XHPROF_G(timebase_conversion);
 #else
     struct timespec s;
     clock_gettime(CLOCK_MONOTONIC, &s);

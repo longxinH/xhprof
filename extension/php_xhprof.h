@@ -224,6 +224,8 @@ static inline void hp_array_del(char **name_array);
 char *hp_get_trace_callback(char *symbol, zend_execute_data *data);
 void hp_init_trace_callbacks();
 
+double get_timebase_conversion();
+
 hp_ignored_functions *hp_ignored_functions_init(char **names);
 
 /* Struct to hold the various callbacks for a single xhprof mode */
@@ -285,6 +287,8 @@ ZEND_BEGIN_MODULE_GLOBALS(xhprof)
 
     /* Table of ignored function names and their filter */
     hp_ignored_functions *ignored_functions;
+
+    double timebase_conversion;
 
 ZEND_END_MODULE_GLOBALS(xhprof)
 
