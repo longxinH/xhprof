@@ -1439,8 +1439,13 @@ zend_string *hp_pcre_match(char *pattern, int len, zval *data, zend_ulong idx)
     ZVAL_NULL(&rsubparts);
     subparts = &rsubparts;
 
+#if PHP_VERSION_ID < 70400
     php_pcre_match_impl(pce_regexp, Z_STRVAL_P(data), Z_STRLEN_P(data), &matches, subparts /* subpats */,
                         0/* global */, 0/* ZEND_NUM_ARGS() >= 4 */, 0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
+#else
+    php_pcre_match_impl(pce_regexp, Z_STR_P(data), &matches, subparts /* subpats */,
+                        0/* global */, 0/* ZEND_NUM_ARGS() >= 4 */, 0/*flags PREG_OFFSET_CAPTURE*/, 0/* start_offset */);
+#endif
 
     if (zend_hash_num_elements(Z_ARRVAL_P(subparts))) {
         match = zend_hash_index_find(Z_ARRVAL_P(subparts), idx);
