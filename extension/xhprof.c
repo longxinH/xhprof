@@ -350,7 +350,7 @@ static void hp_register_constants(INIT_FUNC_ARGS)
 /**
  * A hash function to calculate a 8-bit hash code for a function name.
  * This is based on a small modification to 'zend_inline_hash_func' by summing
- * up all bytes of the ulong returned by 'zend_inline_hash_func'.
+ * up all bytes of the zend_ulong returned by 'zend_inline_hash_func'.
  *
  * @param str, char *, string to be calculated hash code for.
  *
@@ -358,16 +358,16 @@ static void hp_register_constants(INIT_FUNC_ARGS)
  */
 static inline uint8 hp_inline_hash(char * str)
 {
-    ulong h = 5381;
-    uint i = 0;
+    zend_ulong h = 5381;
+    uint32 i = 0;
     uint8 res = 0;
 
     while (*str) {
         h += (h << 5);
-        h ^= (ulong) *str++;
+        h ^= (zend_ulong) *str++;
     }
 
-    for (i = 0; i < sizeof(ulong); i++) {
+    for (i = 0; i < sizeof(zend_ulong); i++) {
         res += ((uint8 *)&h)[i];
     }
 
@@ -409,7 +409,7 @@ double get_timebase_conversion()
     mach_timebase_info_data_t info;
     (void) mach_timebase_info(&info);
 
-    return (info.numer / info.denom) * 1000 * 1000;
+    return (info.numer / info.denom) * 1000;
 #endif
 
     return 1.0;
@@ -1345,7 +1345,7 @@ static zval *hp_zval_at_key(char  *key, zval *values)
 
     if (Z_TYPE_P(values) == IS_ARRAY) {
         HashTable *ht;
-        uint len = strlen(key);
+        uint32 len = strlen(key);
 
         result = zend_hash_str_find(Z_ARRVAL_P(values), key, len);
     }
