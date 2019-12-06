@@ -75,7 +75,7 @@ curl_close($ch);
 ##### Output data
 ```
 curl_exec#http://www.baidu.com
+```
 
 ## PECL Repository
 [![pecl](resource/pecl.png)](https://pecl.php.net/package/xhprof)
-```
