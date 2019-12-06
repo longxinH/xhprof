@@ -1602,19 +1602,19 @@ char* hp_trace_callback_curl_exec(char *symbol, zend_execute_data *data)
     ZVAL_STRING(&func, "curl_getinfo");
 
     zend_fcall_info fci = {
-            size: sizeof(zend_fcall_info),
+            sizeof(fci),
 #if PHP_VERSION_ID < 70100
-            function_table: EG(function_table),
+            EG(function_table),
 #endif
-            function_name: func,
+            func,
 #if PHP_VERSION_ID < 70100
-            symbol_table: NULL,
+            NULL,
 #endif
-            retval: &retval,
-            params: &params,
-            object: NULL,
-            no_separation: 1,
-            param_count: 1
+            &retval,
+            params,
+            NULL,
+            1,
+            1
     };
 
     if (zend_call_function(&fci, NULL) == FAILURE) {

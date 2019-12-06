@@ -39,7 +39,7 @@ extern zend_module_entry xhprof_module_entry;
  */
 
 /* XHProf version                           */
-#define XHPROF_VERSION       "2.1.2-dev"
+#define XHPROF_VERSION       "2.1.2"
 
 /* Fictitious function name to represent top of the call tree. The paranthesis
  * in the name is to ensure we don't conflict with user function names.  */

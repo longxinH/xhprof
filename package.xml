@@ -1,18 +1,25 @@
-<?xml version="1.0"?>
-<package packagerversion="1.4.7" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-http://pear.php.net/dtd/tasks-1.0.xsd
-http://pear.php.net/dtd/package-2.0
-http://pear.php.net/dtd/package-2.0.xsd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>xhprof</name>
  <channel>pecl.php.net</channel>
  <summary>XHProf: A Hierarchical Profiler for PHP</summary>
- <description>
-XHProf is a function-level hierarchical profiler for PHP and has a simple HTML based navigational interface. The raw data collection component is implemented in C (as a PHP extension). The reporting/UI layer is all in PHP. It is capable of reporting function-level inclusive and exclusive wall times, memory usage, CPU times and number of calls for each function. Additionally, it supports ability to compare two runs (hierarchical DIFF reports), or aggregate results from multiple runs.
-</description>
+ <description>XHProf is a function-level hierarchical profiler for PHP and has a simple HTML based navigational interface. The raw data collection component is implemented in C (as a PHP extension). The reporting/UI layer is all in PHP. It is capable of reporting function-level inclusive and exclusive wall times, memory usage, CPU times and number of calls for each function. Additionally, it supports ability to compare two runs (hierarchical DIFF reports), or aggregate results from multiple runs.</description>
+ <lead>
+  <name>Scott MacVicar</name>
+  <user>scottmac</user>
+  <email>scottmac@php.net</email>
+  <active>yes</active>
+ </lead>
  <lead>
   <name>Kannan Muthukkaruppan</name>
   <user>kannan</user>
   <email>kannan@php.net</email>
+  <active>no</active>
+ </lead>
+ <lead>
+  <name>Changhao Jiang</name>
+  <user>cjiang</user>
+  <email>cjiang@php.net</email>
   <active>no</active>
  </lead>
  <developer>
@@ -21,12 +28,6 @@ XHProf is a function-level hierarchical profiler for PHP and has a simple HTML b
   <email>veeve@php.net</email>
   <active>no</active>
  </developer>
- <lead>
-  <name>Changhao Jiang</name>
-  <user>cjiang</user>
-  <email>cjiang@php.net</email>
-  <active>no</active>
- </lead>
  <developer>
   <name>Haiping Zhao</name>
   <user>haiping</user>
@@ -34,27 +35,16 @@ XHProf is a function-level hierarchical profiler for PHP and has a simple HTML b
   <active>no</active>
  </developer>
  <lead>
-  <name>Carlos Bueno</name>
-  <user>aristus</user>
-  <email>cmb@fb.com</email>
-  <active>no</active>
- </lead>
- <lead>
-  <name>Bill Fumerola</name>
-  <user>billf</user>
-  <email>bill@fb.com</email>
+  <name>Xinhui Long</name>
+  <user>longxinhui</user>
+  <email>longxinhui@php.net</email>
   <active>yes</active>
  </lead>
- <lead>
-  <name>Scott MacVicar</name>
-  <user>macvicar</user>
-  <email>scott@fb.com</email>
-  <active>yes</active>
- </lead>
- <date>2009-03-28</date>
+ <date>2019-12-06</date>
+ <time>10:34:00</time>
  <version>
-  <release>0.9.2</release>
-  <api>0.9.2</api>
+  <release>2.1.2</release>
+  <api>2.1.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -62,123 +52,205 @@ XHProf is a function-level hierarchical profiler for PHP and has a simple HTML b
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0</license>
  <notes>
--- Request #16544: Mac port for XHProf (svilen spasov)
--- fix #16574: require/require_once not special cased like include/include_once (kannan)
--- add a sanity test for sampling mode in xhprof (kannan)
--- add support to ignore functions (such as call_user_func) during profiling (mike paleczny)
--- fix #16098: suppress notices due to use of FILE_BINARY (kannan)
--- add a sanity test for timer (kannan)
--- fix for compile error on debian linux (russ)
+-- Fixed build with PHP-7.4 #32
  </notes>
  <contents>
   <dir name="/">
-    <file role="doc" name="CHANGELOG" />
-    <file role="doc" name="CREDITS" />
-    <file role="doc" name="README" />
-    <file role="doc" name="LICENSE" />
-    <dir name="examples">
-      <file role="doc" name="sample.php"/>
-    </dir>
-    <dir name="extension">
-      <file role="src" name="config.m4"/>
-      <file role="src" name="php_xhprof.h"/>
-      <file role="src" name="xhprof.c"/>
-      <dir name="tests">
-        <file role="test" name="common.php" />
-        <file role="test" name="xhprof_001.phpt" />
-        <file role="test" name="xhprof_002.phpt" />
-        <file role="test" name="xhprof_003.phpt" />
-        <file role="test" name="xhprof_004_inc.php" />
-        <file role="test" name="xhprof_004_require.php" />
-        <file role="test" name="xhprof_004.phpt" />
-        <file role="test" name="xhprof_005.phpt" />
-        <file role="test" name="xhprof_006.phpt" />
-        <file role="test" name="xhprof_007.phpt" />
-        <file role="test" name="xhprof_008.phpt" />
-      </dir>
-    </dir>
-    <dir name="xhprof_html">
-      <file role="php" name="callgraph.php"/>
-      <file role="php" name="index.php"/>
-      <file role="php" name="typeahead.php"/>
-      <dir name="css">
-        <file role="src" name="xhprof.css"/>
-      </dir>
-      <dir name="docs">
-        <file role="doc" name="index.html"/>
-        <file role="doc" name="sample-callgraph-image.jpg"/>
-        <file role="doc" name="sample-diff-report-flat-view.jpg"/>
-        <file role="doc" name="sample-diff-report-parent-child-view.jpg"/>
-        <file role="doc" name="sample-flat-view.jpg"/>
-        <file role="doc" name="sample-parent-child-view.jpg"/>
-      </dir>
-      <dir name="jquery">
-        <file role="src" name="indicator.gif"/>
-        <file role="src" name="jquery-1.2.6.js"/>
-        <file role="src" name="jquery.autocomplete.css"/>
-        <file role="src" name="jquery.autocomplete.js"/>
-        <file role="src" name="jquery.tooltip.css"/>
-        <file role="src" name="jquery.tooltip.js"/>
-      </dir>
-      <dir name="js">
-        <file role="src" name="xhprof_report.js"/>
-      </dir>
-    </dir>
-    <dir name="xhprof_lib">
-      <dir name="display">
-        <file role="php" name="typeahead_common.php"/>
-        <file role="php" name="xhprof.php"/>
-      </dir>
-      <dir name="utils">
-        <file role="php" name="callgraph_utils.php"/>
-        <file role="php" name="xhprof_lib.php"/>
-        <file role="php" name="xhprof_runs.php"/>
-      </dir>
-    </dir>
-  </dir> <!-- / -->
+   <file md5sum="a1fc6022f859d9a134bb250b5c247830" name="examples/sample.php" role="doc" />
+   <file md5sum="8c5b803292bdfa6b179f4811e7cd815c" name="extension/tests/common.php" role="test" />
+   <file md5sum="0ab4de6d2f5f2bedbc68055d9d30f655" name="extension/tests/xhprof_001.phpt" role="test" />
+   <file md5sum="6e89bbe614f60018133166a125061f95" name="extension/tests/xhprof_002.phpt" role="test" />
+   <file md5sum="16839b7fdd547f51f11bddbf2aa0af79" name="extension/tests/xhprof_003.phpt" role="test" />
+   <file md5sum="eb869005932dcb9838b47188f210dbc3" name="extension/tests/xhprof_004_inc.php" role="test" />
+   <file md5sum="2cae986a8f2b7aa2d93085dc2fb55122" name="extension/tests/xhprof_004_require.php" role="test" />
+   <file md5sum="862a700cdcf8299c595dc79fd078b915" name="extension/tests/xhprof_004.phpt" role="test" />
+   <file md5sum="e8f1ad99812846249faa0e5d395c7dcc" name="extension/tests/xhprof_005.phpt" role="test" />
+   <file md5sum="5858600139cd70724597efef94a1d26d" name="extension/tests/xhprof_006.phpt" role="test" />
+   <file md5sum="73b1ed842bd69921bb4b290aa0bf81b7" name="extension/tests/xhprof_007.phpt" role="test" />
+   <file md5sum="36370336430b77fb238d65b392ebe736" name="extension/tests/xhprof_008.phpt" role="test" />
+   <file md5sum="f7803d89ac5bcf1aa29cf001d05215b8" name="extension/config.m4" role="src" />
+   <file md5sum="8cf63963b5febf7d27221aeb8c0737b9" name="extension/php_xhprof.h" role="src" />
+   <file md5sum="45396bac2b65705dc8cc2da520915c96" name="extension/xhprof.c" role="src" />
+   <file md5sum="4bdc15b68407d8c532cecf0e11c192e1" name="xhprof_html/css/xhprof.css" role="src" />
+   <file md5sum="e33901861a482c544d844e98ab2f4bf4" name="xhprof_html/docs/index.html" role="doc" />
+   <file md5sum="af8c89ddcfda42771996d2e488319a2c" name="xhprof_html/docs/sample-callgraph-image.jpg" role="doc" />
+   <file md5sum="814b053339f5ec891fa259d628bab955" name="xhprof_html/docs/sample-diff-report-flat-view.jpg" role="doc" />
+   <file md5sum="21449920a5e2734de467057da3943c4f" name="xhprof_html/docs/sample-diff-report-parent-child-view.jpg" role="doc" />
+   <file md5sum="3367a41600196d26519faeb899c58076" name="xhprof_html/docs/sample-flat-view.jpg" role="doc" />
+   <file md5sum="c28c7cbe02bf758d8e3c8c89ab0205d4" name="xhprof_html/docs/sample-parent-child-view.jpg" role="doc" />
+   <file md5sum="4a4f32413963ef6b5c4e97731cb78002" name="xhprof_html/jquery/indicator.gif" role="src" />
+   <file md5sum="f5445df99e90529a68e51961a7fda4a2" name="xhprof_html/jquery/jquery-1.2.6.js" role="src" />
+   <file md5sum="409f023986f3697d010704b24d2a4dff" name="xhprof_html/jquery/jquery.autocomplete.css" role="src" />
+   <file md5sum="0ccb1b9e7a3356bd5a4791c0e99c5578" name="xhprof_html/jquery/jquery.autocomplete.js" role="src" />
+   <file md5sum="b8c0c8685a199e98eafc6489f3b81734" name="xhprof_html/jquery/jquery.tooltip.css" role="src" />
+   <file md5sum="953460b80a3261b669f048c39c055d77" name="xhprof_html/jquery/jquery.tooltip.js" role="src" />
+   <file md5sum="57b11c66acfdad083f63bed2f277e2c2" name="xhprof_html/js/xhprof_report.js" role="src" />
+   <file md5sum="be62a945b5c6dd8eefc80ac7ded16d64" name="xhprof_html/callgraph.php" role="php" />
+   <file md5sum="3b17e49bf8ac17d6103f9b1cfb0b7d8c" name="xhprof_html/index.php" role="php" />
+   <file md5sum="ce0a5a2c54bd0a68f23b7942f1a19025" name="xhprof_html/typeahead.php" role="php" />
+   <file md5sum="8d5adbece5109664a0d8a2f2c2c34854" name="xhprof_lib/display/typeahead_common.php" role="php" />
+   <file md5sum="3f02285e52055ceb2b1b7072315c2bf7" name="xhprof_lib/display/xhprof.php" role="php" />
+   <file md5sum="02f5dfbe544150fd2bae58e62006085f" name="xhprof_lib/utils/callgraph_utils.php" role="php" />
+   <file md5sum="aeb0a54a04dd69d1cb71684ae4cd5943" name="xhprof_lib/utils/xhprof_lib.php" role="php" />
+   <file md5sum="b3e3e693ff2d4fd0d21e874735cc3dd7" name="xhprof_lib/utils/xhprof_runs.php" role="php" />
+   <file md5sum="eedcc815a0febf81fa0fcfcdd3284912" name="CHANGELOG" role="doc" />
+   <file md5sum="3d359ee6349a3beeebca4a9f9d040d10" name="CREDITS" role="doc" />
+   <file md5sum="c2e81cb961aba4e424dc372175fe5500" name="README.md" role="doc" />
+   <file md5sum="2ee41112a44fe7014dce33e26468ba93" name="LICENSE" role="doc" />
+  </dir>
  </contents>
  <dependencies>
-   <required>
-     <php>
-       <min>5.2.0</min>
-     </php>
-     <pearinstaller>
-       <min>1.4.0</min>
-     </pearinstaller>
-   </required>
+  <required>
+   <php>
+    <min>7.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
  </dependencies>
  <providesextension>xhprof</providesextension>
- <extsrcrelease/>
+ <extsrcrelease />
  <changelog>
-   <release>
-      <version>
-        <release>0.9.1</release>
-        <api>0.9.1</api>
-      </version>
-      <date>2009-03-21</date>
-      <stability>
-        <release>beta</release>
-        <api>beta</api>
-      </stability>
-      <notes>
--- doc improvements/fixes
-      </notes>
-   </release>
-   <release>
-      <version>
-        <release>0.9.0</release>
-        <api>0.9.0</api>
-      </version>
-      <date>2009-03-17</date>
-      <stability>
-       <release>beta</release>
-       <api>beta</api>
-     </stability>
-     <notes>
- -- initial release of xhprof
-     </notes>
+<release> 
+   <date>2019-12-06</date> 
+   <version> 
+    <release>2.1.2</release> 
+    <api>2.1.2</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    -- Fixed build with PHP-7.4 #32
+   </notes> 
   </release>
-
+<release> 
+   <date>2019-12-03</date> 
+   <version> 
+    <release>2.1.1</release> 
+    <api>2.1.1</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    -- Fix macOS time benchmark #31
+   </notes> 
+  </release>
+<release> 
+   <date>2019-03-07</date> 
+   <version> 
+    <release>2.1.0</release> 
+    <api>2.1.0</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    -- Add additional information collection switch #25
+   </notes> 
+  </release>
+<release> 
+   <date>2018-05-16</date> 
+   <version> 
+    <release>2.0.0</release> 
+    <api>2.0.0</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    
+   </notes> 
+  </release>
+  <release> 
+   <date>2017-08-15</date> 
+   <version> 
+    <release>1.2.0</release> 
+    <api>1.2.0</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    -- Fixed build with PHP-7.2
+   </notes> 
+  </release>
+  <release> 
+   <date>2017-08-15</date> 
+   <version> 
+    <release>1.1.0</release> 
+    <api>1.1.0</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    -- Fix mysqli_query analysis
+   </notes> 
+  </release>
+  <release> 
+   <date>2017-06-15</date> 
+   <version> 
+    <release>1.0.0</release> 
+    <api>1.0.0</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    -- PHP7 support
+   </notes> 
+  </release>
+  <release>
+   <version>
+    <release>0.9.3</release>
+    <api>0.9.3</api>
+   </version>
+   <date>2013-05-20</date>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>
+-- Just updating the pecl package to https://github.com/facebook/xhprof/commit/254eb24dcfa763c76c57b472093ebc4b81af2b7d
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.1</release>
+    <api>0.9.1</api>
+   </version>
+   <date>2009-03-21</date>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>
+-- doc improvements/fixes
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.0</release>
+    <api>0.9.0</api>
+   </version>
+   <date>2009-03-17</date>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <notes>
+-- initial release of xhprof
+   </notes>
+  </release>
  </changelog>
-
 </package>
