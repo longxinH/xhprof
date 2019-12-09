@@ -274,7 +274,7 @@ ZEND_BEGIN_MODULE_GLOBALS(xhprof)
     /* XHPROF_SAMPLING_INTERVAL in ticks */
     long             sampling_interval;
     uint64           sampling_interval_tsc;
-    int              sampling_depth;
+    long             sampling_depth;
     /* XHProf flags */
     uint32 xhprof_flags;
 
