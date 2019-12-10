@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.7" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>xhprof</name>
  <channel>pecl.php.net</channel>
  <summary>XHProf: A Hierarchical Profiler for PHP</summary>
@@ -40,11 +40,11 @@
   <email>longxinhui@php.net</email>
   <active>yes</active>
  </lead>
- <date>2019-12-06</date>
- <time>10:34:00</time>
+ <date>2019-12-10</date>
+ <time>11:06:00</time>
  <version>
-  <release>2.1.2</release>
-  <api>2.1.2</api>
+  <release>2.1.3</release>
+  <api>2.1.3</api>
  </version>
  <stability>
   <release>stable</release>
@@ -52,7 +52,7 @@
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0</license>
  <notes>
--- Fixed build with PHP-7.4 #32
+ - Fix s390x accuracy loss #15
  </notes>
  <contents>
   <dir name="/">
@@ -112,6 +112,20 @@
  <providesextension>xhprof</providesextension>
  <extsrcrelease />
  <changelog>
+  <release> 
+   <date>2019-12-10</date> 
+   <version> 
+    <release>2.1.3</release> 
+    <api>2.1.3</api> 
+   </version> 
+   <stability> 
+    <release>stable</release> 
+    <api>stable</api> 
+   </stability>
+   <notes>
+    - Fix s390x accuracy loss #15
+   </notes> 
+  </release>
 <release> 
    <date>2019-12-06</date> 
    <version> 
@@ -123,7 +137,7 @@
     <api>stable</api> 
    </stability>
    <notes>
-    -- Fixed build with PHP-7.4 #32
+    - Fixed build with PHP-7.4 #32
    </notes> 
   </release>
 <release> 
@@ -137,7 +151,7 @@
     <api>stable</api> 
    </stability>
    <notes>
-    -- Fix macOS time benchmark #31
+    - Fix macOS time benchmark #31
    </notes> 
   </release>
 <release> 
@@ -151,7 +165,7 @@
     <api>stable</api> 
    </stability>
    <notes>
-    -- Add additional information collection switch #25
+    - Add additional information collection switch #25
    </notes> 
   </release>
 <release> 
@@ -179,7 +193,7 @@
     <api>stable</api> 
    </stability>
    <notes>
-    -- Fixed build with PHP-7.2
+    - Fixed build with PHP-7.2
    </notes> 
   </release>
   <release> 
@@ -193,7 +207,7 @@
     <api>stable</api> 
    </stability>
    <notes>
-    -- Fix mysqli_query analysis
+    - Fix mysqli_query analysis
    </notes> 
   </release>
   <release> 
@@ -207,7 +221,7 @@
     <api>stable</api> 
    </stability>
    <notes>
-    -- PHP7 support
+    - PHP7 support
    </notes> 
   </release>
   <release>
@@ -221,7 +235,7 @@
     <api>beta</api>
    </stability>
    <notes>
--- Just updating the pecl package to https://github.com/facebook/xhprof/commit/254eb24dcfa763c76c57b472093ebc4b81af2b7d
+- Just updating the pecl package to https://github.com/facebook/xhprof/commit/254eb24dcfa763c76c57b472093ebc4b81af2b7d
    </notes>
   </release>
   <release>
@@ -235,7 +249,7 @@
     <api>beta</api>
    </stability>
    <notes>
--- doc improvements/fixes
+- doc improvements/fixes
    </notes>
   </release>
   <release>
@@ -249,7 +263,7 @@
     <api>beta</api>
    </stability>
    <notes>
--- initial release of xhprof
+- initial release of xhprof
    </notes>
   </release>
  </changelog>
