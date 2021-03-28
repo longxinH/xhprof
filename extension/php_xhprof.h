@@ -176,9 +176,14 @@ typedef void (*hp_end_function_cb)   (hp_entry_t **entries);
  * GLOBAL STATIC VARIABLES
  * ***********************
  */
+#if PHP_VERSION_ID >= 80000
+#include "zend_observer.h"
+static zend_observer_fcall_handlers hp_tracer_observer(zend_execute_data *execute_data);
+#else
 /* Pointer to the original execute function */
 static void (*_zend_execute_ex) (zend_execute_data *execute_data);
 ZEND_DLEXPORT void hp_execute_ex (zend_execute_data *execute_data);
+#endif
 
 /* Pointer to the origianl execute_internal function */
 static void (*_zend_execute_internal) (zend_execute_data *data, zval *return_value);

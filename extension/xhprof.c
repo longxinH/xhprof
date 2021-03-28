@@ -266,9 +266,13 @@ PHP_MINIT_FUNCTION(xhprof)
     _zend_compile_string = zend_compile_string;
     zend_compile_string = hp_compile_string;
 
+#if PHP_VERSION_ID >= 80000
+    zend_observer_fcall_register(hp_tracer_observer);
+#else
     /* Replace zend_execute with our proxy */
     _zend_execute_ex = zend_execute_ex;
     zend_execute_ex  = hp_execute_ex;
+#endif
 
     /* Replace zend_execute_internal with our proxy */
     _zend_execute_internal = zend_execute_internal;
@@ -294,7 +298,9 @@ PHP_MSHUTDOWN_FUNCTION(xhprof)
     hp_free_the_free_list();
 
     /* Remove proxies, restore the originals */
+#if PHP_VERSION_ID < 80000
     zend_execute_ex       = _zend_execute_ex;
+#endif
     zend_execute_internal = _zend_execute_internal;
     zend_compile_file     = _zend_compile_file;
     zend_compile_string   = _zend_compile_string;
@@ -1115,6 +1121,51 @@ void hp_mode_sampled_endfn_cb(hp_entry_t **entries)
  * ***************************
  */
 
+#if PHP_VERSION_ID >= 80000
+
+/**
+ * Using PHP 8.0 Observer API.
+ *
+ * @author beberlei
+ */
+
+static void hp_tracer_observer_begin(zend_execute_data *ex) {
+    if (!XHPROF_G(enabled)) {
+        return;
+    }
+
+    zend_string *func;
+
+    func = hp_get_function_name(ex);
+    if (!func) {
+        return;
+    }
+    int hp_profile_flag = 1;
+    BEGIN_PROFILING(&XHPROF_G(entries), func, hp_profile_flag, ex);
+    zend_string_release(func);
+}
+
+static void hp_tracer_observer_end(zend_execute_data *ex, zval *return_value) {
+    if (!XHPROF_G(enabled)) {
+        return;
+    }
+
+    if (XHPROF_G(entries)) {
+        END_PROFILING(&XHPROF_G(entries), 1);
+    }
+}
+
+
+static zend_observer_fcall_handlers hp_tracer_observer(zend_execute_data *execute_data) {
+    zend_function *func = execute_data->func;
+
+    if (!func->common.function_name) {
+        return (zend_observer_fcall_handlers){NULL, NULL};
+    }
+
+    return (zend_observer_fcall_handlers){hp_tracer_observer_begin, hp_tracer_observer_end};
+}
+#else
 /**
  * XHProf enable replaced the zend_execute function with this
  * new execute function. We can do whatever profiling we need to
@@ -1152,6 +1203,7 @@ ZEND_DLEXPORT void hp_execute_ex (zend_execute_data *execute_data)
 
     zend_string_release(func);
 }
+#endif
 
 /**
  * Very similar to hp_execute. Proxy for zend_execute_internal().
