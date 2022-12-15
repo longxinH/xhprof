@@ -3,7 +3,6 @@ language: php
 notifications:
   email: false
 
-os: linux
 arch:
   - x86_64
   - s390x
@@ -11,7 +10,7 @@ arch:
 php:
   - 7.2
   - 7.3
-  - 7.4.22
+  - 7.4
   - 8.0
   - 8.1
 
