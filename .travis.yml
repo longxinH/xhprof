@@ -3,9 +3,6 @@ language: php
 notifications:
   email: false
 
-dist: bionic
-sudo: false
-
 arch:
   - x86_64
   - s390x
