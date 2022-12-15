@@ -3,6 +3,10 @@ language: php
 notifications:
   email: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 arch:
   - x86_64
   - s390x
