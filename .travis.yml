@@ -1,7 +1,7 @@
 language: php
 
 notifications:
-  email: longxinhui.e@gmail.com
+  email: false
 
 os: linux
 arch:
@@ -11,7 +11,7 @@ arch:
 php:
   - 7.2
   - 7.3
-  - 7.4.33
+  - 7.4.22
   - 8.0
   - 8.1
 
