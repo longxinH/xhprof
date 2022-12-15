@@ -1,7 +1,12 @@
 language: php
 
 notifications:
-  email: false
+  email: longxinhui.e@gmail.com
+
+os: linux
+arch:
+  - x86_64
+  - s390x
 
 php:
   - 7.2
