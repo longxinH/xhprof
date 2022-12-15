@@ -3,10 +3,7 @@ language: php
 notifications:
   email: false
 
-cache:
-  directories:
-    - $HOME/.composer/cache
-
+os: linux
 arch:
   - x86_64
   - s390x
@@ -22,6 +19,11 @@ env:
   global:
     - TEST_PHP_ARGS="-q"
     - REPORT_EXIT_STATUS=1
+
+before_install:
+    - sudo apt-get update
+    - sudo apt-get -y install libcurl4-openssl-dev
+    - if [[ $VERSION =~ ^8.1 ]]; then sudo apt-get -y install argon2 libargon2-0 libargon2-0-dev; fi
 
 before_script:
   - cd extension
