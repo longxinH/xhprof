@@ -1,6 +1,6 @@
 {
     "name": "longxinh/xhprof",
-    "type": "library",
+    "type": "php-ext",
     "description": "XHProf: A Hierarchical Profiler for PHP",
     "keywords": ["profiling", "performance"],
     "homepage": "http://pecl.php.net/package/xhprof",
@@ -14,5 +14,8 @@
             "xhprof_lib/utils/xhprof_runs.php"
         ]
     },
-    "bin": ["bin/xhprofile"]
+    "bin": ["bin/xhprofile"],
+    "php-ext": {
+        "extension-name": "xhprof"
+    }
 }
