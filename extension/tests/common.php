@@ -14,6 +14,9 @@
 function print_canonical($xhprof_data) {
   ksort($xhprof_data);
   foreach($xhprof_data as $func => $metrics) {
+    if (($start = strpos($func, '{closure:')) !== false && ($end = strpos($func, '}', $start)) !== false) {
+        $func = substr($func, 0, $start) . '{closure}' . substr($func, $end + 1);
+    }
     echo str_pad($func, 40) . ":";
     ksort($metrics);
     foreach ($metrics as $name => $value) {
