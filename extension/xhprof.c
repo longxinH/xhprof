@@ -924,7 +924,7 @@ void hp_mode_hier_endfn_cb(hp_entry_t **entries)
 
 #if PHP_VERSION_ID >= 80000
     if (top->is_trace == 0) {
-        XHPROF_G(func_hash_counters[top->hash_code])--;
+        /* For ignored functions, don't decrement hash counter since it was never incremented */
         return;
     }
 #endif

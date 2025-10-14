@@ -84,16 +84,13 @@ static zend_always_inline zend_string *hp_get_trace_callback(zend_string *functi
         callback = (hp_trace_callback*)zend_hash_find_ptr(XHPROF_G(trace_callbacks), function_name);
         if (callback) {
             trace_name = (*callback)(function_name, data);
-        } else {
-            return function_name;
+            zend_string_release(function_name);
+            return trace_name;
         }
-    } else {
-        return function_name;
     }
-
-    zend_string_release(function_name);
-
-    return trace_name;
+    
+    /* No callback found, return the original function_name */
+    return function_name;
 }
 
 static zend_always_inline hp_entry_t *hp_fast_alloc_hprof_entry()
@@ -114,6 +111,7 @@ static zend_always_inline void hp_fast_free_hprof_entry(hp_entry_t *p)
 {
     if (p->name_hprof != NULL) {
         zend_string_release(p->name_hprof);
+        p->name_hprof = NULL;  /* Prevent double-free if entry is reused */
     }
 
     /* we use/overload the prev_hprof field in the structure to link entries in
@@ -162,7 +160,13 @@ static zend_always_inline int begin_profiling(zend_string *root_symbol, zend_exe
     } else {
 #if PHP_VERSION_ID >= 80000
         hp_entry_t *cur_entry = hp_fast_alloc_hprof_entry();
-        (cur_entry)->name_hprof = zend_string_copy((*(entries))->name_hprof);
+        /* Check if entries is not NULL before dereferencing */
+        if (*(entries) != NULL) {
+            (cur_entry)->name_hprof = zend_string_copy((*(entries))->name_hprof);
+        } else {
+            /* If this is the first call and it's ignored, use the function name */
+            (cur_entry)->name_hprof = zend_string_copy(function_name);
+        }
         (cur_entry)->prev_hprof = (*(entries));
         (cur_entry)->is_trace = 0;
         (cur_entry)->hash_code = (*(entries))->hash_code;
