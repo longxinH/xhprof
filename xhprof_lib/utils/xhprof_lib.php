@@ -908,7 +908,7 @@ function xhprof_param_init($params) {
     }
 
     if ($k === 'run') {
-      $p = implode(',', array_filter(explode(',', $p), 'ctype_xdigit'));
+      $p = implode(',', array_filter(explode(',', $p), fn($v) => preg_match('/^[A-Za-z0-9-]+$/', $v)));
     }
 
     if ($k == 'symbol') {
