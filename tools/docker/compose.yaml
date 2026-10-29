@@ -1,0 +1,35 @@
+# Pick the PHP build with environment variables (defaults: 8.5, cli):
+#
+#   docker compose -f tools/docker/compose.yaml run --rm php                 # build + test on 8.5 NTS
+#   PHP_VERSION=8.2 PHP_VARIANT=zts docker compose -f tools/docker/compose.yaml run --rm php
+#   docker compose -f tools/docker/compose.yaml run --rm php bash            # shell in the dev image
+#   docker compose -f tools/docker/compose.yaml up ui                        # report UI on http://localhost:8080
+#
+# See CONTRIBUTING.md for details.
+
+name: xhprof
+
+x-php: &php
+  build:
+    context: .
+    args:
+      PHP_VERSION: ${PHP_VERSION:-8.5}
+      PHP_VARIANT: ${PHP_VARIANT:-cli}
+      DEBUG_TOOLS: ${DEBUG_TOOLS:-1}
+  image: xhprof-dev:${PHP_VERSION:-8.5}-${PHP_VARIANT:-cli}
+  volumes:
+    - ../..:/src
+    - runs:/tmp/xhprof
+
+services:
+  php:
+    <<: *php
+
+  ui:
+    <<: *php
+    command: php -S 0.0.0.0:8080 -t xhprof_html
+    ports:
+      - "8080:8080"
+
+volumes:
+  runs:

@@ -112,3 +112,14 @@ curl_exec#http://www.baidu.com
 
 ## PECL Repository
 [![pecl](resource/pecl.png)](https://pecl.php.net/package/xhprof)
+
+# Development
+Build the extension and run its tests against any PHP version in Docker, without installing a toolchain locally:
+
+```bash
+make test                       # PHP 8.5 NTS
+make test PHP=8.2 VARIANT=zts   # another PHP build
+make test-all                   # PHP 8.2-8.5, NTS and ZTS
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the other targets (opcache and valgrind runs, older PHP versions, a shell, the report UI) and the Docker setup behind them.
