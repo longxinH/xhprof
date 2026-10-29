@@ -6,8 +6,10 @@ Author: Kannan
 
 include_once dirname(__FILE__).'/common.php';
 
+// Not a constant return, so opcache can't inline the call away.
 function bar() {
-  return 1;
+  static $calls = 0;
+  return ++$calls;
 }
 
 function foo($x) {

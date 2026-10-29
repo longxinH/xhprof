@@ -11,8 +11,10 @@ $xhprof_ignored_functions = array( 'ignored_functions' =>
                                             'call_user_func_array',
                                             'my_call_user_func_safe',
                                             'my_call_user_func_array_safe'));
+// Not a constant return, so opcache can't inline the call away.
 function bar() {
-  return 1;
+  static $calls = 0;
+  return ++$calls;
 }
 
 function foo($x) {
