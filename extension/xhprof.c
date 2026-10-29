@@ -924,7 +924,8 @@ void hp_mode_hier_endfn_cb(hp_entry_t **entries)
 
 #if PHP_VERSION_ID >= 80000
     if (top->is_trace == 0) {
-        XHPROF_G(func_hash_counters[top->hash_code])--;
+        /* Placeholder for an ignored function: it never bumped the hash
+         * counter in begin, so there is nothing to undo. */
         return;
     }
 #endif
@@ -1204,6 +1205,10 @@ static void hp_begin(zend_long level, zend_long xhprof_flags)
                 XHPROF_G(mode_cb).end_fn_cb   = hp_mode_sampled_endfn_cb;
                 break;
         }
+
+        /* Recursion counters must not outlive a profiling run, otherwise any
+         * imbalance leaks into every later run in the same process. */
+        memset(XHPROF_G(func_hash_counters), 0, sizeof(XHPROF_G(func_hash_counters)));
 
         /* one time initializations */
         hp_init_profiler_state(level);

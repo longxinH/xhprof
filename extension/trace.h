@@ -139,7 +139,8 @@ static zend_always_inline int begin_profiling(zend_string *root_symbol, zend_exe
     }
 
     zend_ulong hash_code = ZSTR_HASH(function_name);
-    int profile_curr = !hp_ignore_entry_work(hash_code, function_name);
+    /* The root symbol must never be ignored: it anchors the entries stack. */
+    int profile_curr = root_symbol != NULL || !hp_ignore_entry_work(hash_code, function_name);
     if (profile_curr) {
         if (execute_data != NULL) {
             function_name = hp_get_trace_callback(function_name, execute_data);
@@ -162,11 +163,14 @@ static zend_always_inline int begin_profiling(zend_string *root_symbol, zend_exe
     } else {
 #if PHP_VERSION_ID >= 80000
         hp_entry_t *cur_entry = hp_fast_alloc_hprof_entry();
+        /* Observers always pair begin/end, so push a placeholder that mirrors
+         * its parent: children of an ignored function are attributed to the
+         * nearest profiled ancestor, with that ancestor's recursion level. */
         (cur_entry)->name_hprof = zend_string_copy((*(entries))->name_hprof);
         (cur_entry)->prev_hprof = (*(entries));
         (cur_entry)->is_trace = 0;
         (cur_entry)->hash_code = (*(entries))->hash_code;
-        (cur_entry)->rlvl_hprof = 0;
+        (cur_entry)->rlvl_hprof = (*(entries))->rlvl_hprof;
         (*(entries)) = (cur_entry);
         profile_curr = 1;
 #endif
