@@ -76,6 +76,7 @@
    <file name="extension/tests/xhprof_011_prepend.php" role="test" />
    <file name="extension/tests/xhprof_012.phpt" role="test" />
    <file name="extension/tests/xhprof_013.phpt" role="test" />
+   <file name="extension/tests/xhprof_runs_002.phpt" role="test" />
    <file name="extension/config.m4" role="src" />
    <file name="extension/config.w32" role="src" />
    <file name="extension/php_xhprof.h" role="src" />

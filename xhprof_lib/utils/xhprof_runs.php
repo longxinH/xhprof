@@ -118,7 +118,8 @@ class XHProfRuns_Default implements iXHProfRuns {
 
     $contents = file_get_contents($file_name);
     $run_desc = "XHProf Run (Namespace=$type)";
-    return unserialize($contents);
+    // Runs only contain arrays and scalars, so never instantiate objects.
+    return unserialize($contents, array('allowed_classes' => false));
   }
 
   public function save_run($xhprof_data, $type, $run_id = null) {
