@@ -1,0 +1,76 @@
+name: Windows
+
+on:
+  push:
+  pull_request:
+  # Attach the DLLs to a GitHub release when it's created.
+  release:
+    types: [created]
+  # Run the full release matrix by hand, e.g. before tagging.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Pushing a tag and creating its release share a ref, so group by event too:
+# otherwise the tag push run can cancel the run that uploads the DLLs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  matrix:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Picks the Windows runner and Visual Studio version for each PHP version.
+      # Pushes and pull requests build the oldest and newest supported PHP on
+      # x64; releases (and manual runs) build every version for x64 and x86.
+      - name: Build matrix
+        id: matrix
+        uses: php/php-windows-builder/extension-matrix@29352c0ef9e8ce65264ea9e287881a6f7758a953 # 1.9.0
+        with:
+          php-version-list: ${{ contains(fromJSON('["release", "workflow_dispatch"]'), github.event_name) && '7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5' || '8.2, 8.5' }}
+          arch-list: ${{ contains(fromJSON('["release", "workflow_dispatch"]'), github.event_name) && 'x64, x86' || 'x64' }}
+          ts-list: 'nts, ts'
+
+  build:
+    name: PHP ${{ matrix.php-version }} ${{ matrix.arch }} ${{ matrix.ts }}
+    needs: matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # php-windows-builder reads config.w32 from the workspace root when it
+      # builds the checked-out sources, so lift extension/ up a level.
+      - name: Move extension sources to the workspace root
+        shell: pwsh
+        run: Move-Item -Path extension/* -Destination .
+
+      # Builds the DLL, runs the .phpt tests and uploads the build as an artifact.
+      - name: Build and test
+        uses: php/php-windows-builder/extension@29352c0ef9e8ce65264ea9e287881a6f7758a953 # 1.9.0
+        with:
+          php-version: ${{ matrix.php-version }}
+          arch: ${{ matrix.arch }}
+          ts: ${{ matrix.ts }}
+          args: --enable-xhprof
+
+  release:
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Upload DLLs to the release
+        uses: php/php-windows-builder/release@29352c0ef9e8ce65264ea9e287881a6f7758a953 # 1.9.0
+        with:
+          release: ${{ github.event.release.tag_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
