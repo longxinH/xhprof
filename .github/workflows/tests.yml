@@ -1,0 +1,83 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  extension:
+    name: PHP ${{ matrix.php }} ${{ matrix.ts }}${{ matrix.opcache && ' opcache' || '' }}
+    runs-on: ubuntu-24.04
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Versions that still get fixes upstream.
+        php: ['8.2', '8.3', '8.4', '8.5']
+        ts: [nts, ts]
+        opcache: [false]
+        experimental: [false]
+        include:
+          - { php: '8.5', ts: nts, opcache: true, experimental: false }
+          # Older versions that composer.json still allows (>=7.2.0).
+          - { php: '7.2', ts: nts, opcache: false, experimental: false }
+          - { php: '7.3', ts: nts, opcache: false, experimental: false }
+          - { php: '7.4', ts: nts, opcache: false, experimental: false }
+          - { php: '8.0', ts: nts, opcache: false, experimental: false }
+          - { php: '8.1', ts: nts, opcache: false, experimental: false }
+          - { php: nightly, ts: nts, opcache: false, experimental: true }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+        env:
+          phpts: ${{ matrix.ts }}
+
+      - name: phpize
+        working-directory: extension
+        run: phpize
+
+      - name: Configure
+        working-directory: extension
+        env:
+          CFLAGS: -Wall -Werror=implicit-function-declaration -g -O2
+        run: ./configure --enable-xhprof
+
+      - name: Build
+        working-directory: extension
+        run: make -j"$(nproc)"
+
+      # make test runs PHP with -n and points extension_dir at modules/, so shared
+      # extensions the tests need are loaded by full path.
+      - name: Curl test arguments
+        id: curl
+        run: |
+          php -n -m | grep -qx curl || echo "args=-d extension=$(php-config --extension-dir)/curl.so" >> "$GITHUB_OUTPUT"
+
+      # PHP 8.5+ always has opcache built in; older versions load it as a shared extension.
+      - name: Opcache test arguments
+        id: opcache
+        if: matrix.opcache
+        run: |
+          args="-d opcache.enable_cli=1"
+          php -n -m | grep -q 'Zend OPcache' || args="$args -d zend_extension=$(php-config --extension-dir)/opcache.so"
+          echo "args=$args" >> "$GITHUB_OUTPUT"
+
+      - name: Test
+        working-directory: extension
+        env:
+          NO_INTERACTION: 1
+          REPORT_EXIT_STATUS: 1
+          TEST_PHP_ARGS: ${{ steps.curl.outputs.args }} ${{ steps.opcache.outputs.args }}
+        run: make test TESTS="--show-diff tests/"
