@@ -143,7 +143,8 @@ function xhprof_get_metrics($xhprof_data) {
 
 /**
  * Takes a parent/child function name encoded as
- * "a==>b" and returns array("a", "b").
+ * "a==>b" and returns array("a", "b"). The root symbol
+ * has no parent, so "main()" returns array("", "main()").
  *
  * @author Kannan
  */
@@ -155,7 +156,10 @@ function xhprof_parse_parent_child($parent_child) {
     return $ret;
   }
 
-  return array(null, $ret[0]);
+  // An empty string rather than null: callers use the parent as an array
+  // key (null keys are deprecated in PHP 8.5) and pass it to string
+  // functions (null arguments are deprecated since PHP 8.1).
+  return array('', $ret[0]);
 }
 
 /**

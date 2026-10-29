@@ -255,7 +255,10 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
   // performance bottleneck).
   $cur_id = 0; $max_wt = 0;
   foreach ($sym_table as $symbol => $info) {
-    if (empty($func) && abs($info["wt"] / $totals["wt"]) < $threshold) {
+    // The total is 0 when diffing identical runs. PHP 7 kept every node
+    // (NAN < $threshold is false); PHP 8 throws DivisionByZeroError instead.
+    if (empty($func) && $totals["wt"] != 0 &&
+        abs($info["wt"] / $totals["wt"]) < $threshold) {
       unset($sym_table[$symbol]);
       continue;
     }
@@ -299,12 +302,12 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
     } else {
       $shape = "box";
       $name = addslashes($symbol)."\\nInc: ". sprintf("%.3f",$info["wt"] / 1000) .
-              " ms (" . sprintf("%.1f%%", 100 * $info["wt"] / $totals["wt"]).")";
+              " ms (" . sprintf("%.1f%%", $totals["wt"] ? 100 * $info["wt"] / $totals["wt"] : 0).")";
     }
     if ($left === null) {
       $label = ", label=\"".$name."\\nExcl: "
                .(sprintf("%.3f",$info["excl_wt"] / 1000.0))." ms ("
-               .sprintf("%.1f%%", 100 * $info["excl_wt"] / $totals["wt"])
+               .sprintf("%.1f%%", $totals["wt"] ? 100 * $info["excl_wt"] / $totals["wt"] : 0)
                . ")\\n".$info["ct"]." total calls\"";
     } else {
       if (isset($left[$symbol]) && isset($right[$symbol])) {
