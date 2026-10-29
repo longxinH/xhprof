@@ -74,6 +74,15 @@ class XHProfRuns_Default implements iXHProfRuns {
     return uniqid();
   }
 
+  /**
+   * Run ids and namespaces end up in a file name, so only allow characters
+   * that cannot change the directory (no slashes, backslashes or NUL bytes).
+   */
+  private function is_valid_name($name) {
+    return is_scalar($name)
+      && preg_match('/\A[A-Za-z0-9_.-]+\z/', (string) $name) === 1;
+  }
+
   private function file_name($run_id, $type) {
 
     $file = "$run_id.$type." . $this->suffix;
@@ -108,6 +117,12 @@ class XHProfRuns_Default implements iXHProfRuns {
   }
 
   public function get_run($run_id, $type, &$run_desc) {
+    if (!$this->is_valid_name($run_id) || !$this->is_valid_name($type)) {
+      xhprof_error("Invalid run id or namespace");
+      $run_desc = "Invalid Run Id";
+      return null;
+    }
+
     $file_name = $this->file_name($run_id, $type);
 
     if (!file_exists($file_name)) {
@@ -129,6 +144,11 @@ class XHProfRuns_Default implements iXHProfRuns {
 
     if ($run_id === null) {
       $run_id = $this->gen_run_id($type);
+    }
+
+    if (!$this->is_valid_name($run_id) || !$this->is_valid_name($type)) {
+      xhprof_error("Invalid run id or namespace");
+      return null;
     }
 
     $file_name = $this->file_name($run_id, $type);
